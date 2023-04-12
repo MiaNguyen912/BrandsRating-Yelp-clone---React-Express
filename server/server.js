@@ -56,14 +56,23 @@ app.get("/api/v1/brandRatings/:id", async (req, res)=>{
 })
 
 //create a brand
-app.post("/api/v1/brandRatings", (req,res)=>{
+app.post("/api/v1/brandRatings", async (req,res)=>{
     console.log(req.body);
-    res.status(201).json({ //status code 201: created
-        status: "success",
-        data:{
-            brand: "Lulus",
-        }
-    })
+    try{
+        const statement = "INSERT INTO brands (name, description, price_range) VALUES ($1, $2, $3) RETURNING *";
+        const value = [req.body.name, req.body.description, req.body.price_range]
+        const results = await db.query(statement,value);
+            
+        res.status(201).json({ //status code 201: created
+            status: "success",
+            data:{
+                brand: results.rows[0]
+            }
+        })
+    } catch (err){
+        console.log(err);
+    }
+    
 })
 
 //update brands
