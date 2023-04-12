@@ -18,14 +18,20 @@ app.use(express.json()); //a built in middleware function in Express
 //RESTful API:
 //get all brand rating
 app.get("/api/v1/brandRatings", async(req,res) => {
-    const result = await db.query("select * from brands")
-    console.log(result);
-    res.status(200).json({ //
+    try{
+        const results = await db.query("select * from brands")
+        console.log(results);  //result is an obj containing array rows, which has the records in our database table
+        res.status(200).json({ 
     	    status: "success",
+            results: results.rows.length, 
             data: {
-                brand: ["Banana Republic", "Fashion Nova"]
+                brand: results.rows
             }  
-    })  	
+        })  	
+    } catch (error){
+        console.log(error);
+    }
+    
 })
 
 //get a brand rating (using dynamic URL)
