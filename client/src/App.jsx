@@ -9,7 +9,7 @@ import UpdateBrand from "./routes/UpdateBrand";
 
 function App() {
     return(
-        <div>
+        <div className='container'>
             <Router>
                 <Routes> {/*switch statement*/}
                     <Route exact path="/" Component={Home} />
