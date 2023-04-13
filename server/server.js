@@ -40,7 +40,6 @@ app.get("/api/v1/brandRatings/:id", async (req, res)=>{
         const results = await db.query(
             //`select * from brands where id = ${req.params.id}` //we can do this but interpolation is not recommended in query
                                                                  //use parameterized query instead to avoid sql injection
-            //`select $2 from brands where id = $1`, [req.params.id, `name`] //$1, $2 are placeholders for req.params.id and 'name' respectively
             "select * from brands where id = $1", [req.params.id] //$1 is placeholder for req.params.id
             );
         res.status(200).json({
