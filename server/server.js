@@ -95,10 +95,18 @@ app.put("/api/v1/brandRatings/:id", async (req, res)=>{
 })
 
 //delete a brand
-app.delete("/api/v1/brandRatings/:id", (req, res)=>{
-    res.status(204).json({ //status code 204: no content
-        status: "success",
-    })
+app.delete("/api/v1/brandRatings/:id", async (req, res)=>{
+    try{
+        const statement = "DELETE FROM brands WHERE id = $1";
+        const value = [req.params.id];
+        const results = await db.query(statement,value);
+        res.status(204).json({ //status code 204: no content
+            status: "success",
+        })
+    } catch(err){
+        console.log(err)
+    }
+    
 })
 
 
