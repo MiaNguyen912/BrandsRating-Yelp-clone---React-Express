@@ -30,7 +30,19 @@ function BrandList(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>   
+                    {brands && brands.map((brand)=>{  //if brands exist (if we successfully fetch data and put in our context), call the brand.maps()
+                        return(
+                            <tr key = {brand.id}>   
+                                <th>{brand.name}</th>
+                                <td>{brand.description}</td>
+                                <td>{"$".repeat(brand.price_range)}</td>
+                                <td>reviews</td>
+                                <td><button className="btn btn-secondary">Update</button></td>
+                                <td><button className="btn btn-secondary">Delete</button></td>
+                            </tr>
+                        )
+                    })}
+                    {/* <tr>   
                         <th scope="row">Lulus</th>
                         <td>Lulus</td>
                         <td>Lulus</td>
@@ -45,7 +57,7 @@ function BrandList(props) {
                         <td>Lulus</td>
                         <td><button className="btn btn-secondary">Update</button></td>
                         <td><button className="btn btn-secondary">Delete</button></td>
-                    </tr>
+                    </tr> */}
                 </tbody>
             </table>
 
