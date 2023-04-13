@@ -8,7 +8,7 @@ function BrandList(props) {
         async function fetchData(){
             try{
                 const response = await BrandFinder.get("/ ") //baseURL is "http://localhost:3001/api/v1/brandRatings"
-                setBrands(response.data.data.brand)
+                setBrands(response.data.data.brand) //in server.js, app.get() will respond with "brand" record in the "data" object
             } catch (error){
                 
             }
