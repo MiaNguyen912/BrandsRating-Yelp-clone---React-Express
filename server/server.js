@@ -62,7 +62,7 @@ app.post("/api/v1/brandRatings", async (req,res)=>{
         const statement = "INSERT INTO brands (name, description, price_range) VALUES ($1, $2, $3) RETURNING *";
         const value = [req.body.name, req.body.description, req.body.price_range]
         const results = await db.query(statement,value);
-            
+
         res.status(201).json({ //status code 201: created
             status: "success",
             data:{
@@ -76,15 +76,22 @@ app.post("/api/v1/brandRatings", async (req,res)=>{
 })
 
 //update brands
-app.put("/api/v1/brandRatings/:id", (req, res)=>{
-    console.log(req.params.id);
-    console.log(req.body);
-    res.status(200).json({
-        status: "success",
-        data:{
-            brand: "Lulus",
-        }
-    })
+app.put("/api/v1/brandRatings/:id", async (req, res)=>{
+    try {
+        const statement = "UPDATE brands SET name = $1, description = $2, price_range = $3 WHERE id = $4 RETURNING *";
+        const value = [req.body.name, req.body.description, req.body.price_range, req.params.id];
+        const results = await db.query(statement, value);
+
+        res.status(200).json({
+            status: "success",
+            data:{
+                brand: results.rows[0]
+            }
+        })
+    } catch (err){
+        console.log(err)
+    }
+    
 })
 
 //delete a brand
