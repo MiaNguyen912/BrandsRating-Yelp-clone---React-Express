@@ -2,11 +2,13 @@ require('dotenv').config(); //environment variables
 const express = require('express');
 const morgan = require("morgan"); //middleware
 const db = require("./db");
+const cors = require("cors")
 
 const app = express();
 //-------------------
 
 //express middleware:
+app.use(cors());
 app.use(express.json()); //a built in middleware function in Express
                          // It parses incoming JSON requests and puts 
                          //the parsed data in req.body.
@@ -20,12 +22,11 @@ app.use(express.json()); //a built in middleware function in Express
 app.get("/api/v1/brandRatings", async(req,res) => {
     try{
         const results = await db.query("select * from brands")
-        console.log(results);  //result is an obj containing array rows, which has the records in our database table
         res.status(200).json({ 
     	    status: "success",
             results: results.rows.length, 
             data: {
-                brand: results.rows
+                brand: results.rows //result is an obj containing array rows, which has the records in our database table
             }  
         })  	
     } catch (error){
