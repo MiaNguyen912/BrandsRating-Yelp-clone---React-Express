@@ -13,13 +13,20 @@ function AddBrand() {
   async function handleClick(event){
     event.preventDefault(); //prevent page reloading
     try{
-        const response = await BrandFinder.post("/", {
+        const response = await BrandFinder.post("/", {  //post method will insert new data into our database table
             name: name,
             description: description,
             price_range: priceRange
         })
         //console.log(response); //to see the structure of response objec6
-        addBrand(response.data.data.brand);
+        addBrand(response.data.data.brand); //this will call setBrands(), which adds new brand to the brands array. 
+                                            //then the BrandList component will render out all brands in the brands array
+
+        //we can do this instead of addBrand, but must export {brands, setBrands}:
+        // const {brands, setBrands} = useContext(BrandsContext);                                    
+        // setBrands([...brands, response.data.data.brand]) 
+        
+
     } catch(err){}
   }
 

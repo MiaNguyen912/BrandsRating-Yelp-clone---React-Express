@@ -103,6 +103,10 @@ app.delete("/api/v1/brandRatings/:id", async (req, res)=>{
         res.status(204).json({ //status code 204: no content
             status: "success",
         })
+        // res.redirect("http://localhost:3000") //WRONG: cannot redirect because client and server are running on different ports
+                                                //server is on port 3001 (we choose this port)
+                                                //client (react app) is on 3000 (default)
+                                                //postgres is on 5432
     } catch(err){
         console.log(err)
     }

@@ -10,6 +10,7 @@ function BrandsContextProvider (props){
     function addBrand(newBrand){
         setBrands([...brands, newBrand])
     }
+    
 
     return(
         <BrandsContext.Provider value={{brands, setBrands, addBrand}}>

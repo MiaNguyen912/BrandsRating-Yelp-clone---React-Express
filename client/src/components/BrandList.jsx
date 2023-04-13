@@ -9,12 +9,22 @@ function BrandList(props) {
             try{
                 const response = await BrandFinder.get("/ ") //baseURL is "http://localhost:3001/api/v1/brandRatings"
                 setBrands(response.data.data.brand) //in server.js, app.get() will respond with "brand" record in the "data" object
-            } catch (error){
-                
-            }
+            } catch (error){}
         }
         fetchData();
     }, [])
+
+    async function handleDelete(id){
+        try{
+            const response = await BrandFinder.delete(`/${id}`); //delete method in "http://localhost:3001/api/v1/brandRatings/id" will delete record from our database table
+            setBrands(brands.filter((brand) =>{ //set the brands array to exclude the brand with the given id
+                return brand.id !== id;
+            }));  
+            console.log(response);
+        } catch (err){
+            console.log(err)
+        };
+    }
 
     return (
         <div className='list-group'>
@@ -38,7 +48,11 @@ function BrandList(props) {
                                 <td>{"$".repeat(brand.price_range)}</td>
                                 <td>reviews</td>
                                 <td><button className="btn btn-secondary">Update</button></td>
-                                <td><button className="btn btn-secondary">Delete</button></td>
+                                <td><button 
+                                        className="btn btn-secondary" 
+                                        onClick={()=> handleDelete(brand.id)} //if we write onClick={handleDelete(brand.id)}, that function will be called right away
+                                    >Delete</button>
+                                </td>
                             </tr>
                         )
                     })}
