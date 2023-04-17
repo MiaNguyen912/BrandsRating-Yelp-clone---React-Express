@@ -22,11 +22,9 @@ function AddBrand() {
         addBrand(response.data.data.brand); //this will call setBrands(), which adds new brand to the brands array. 
                                             //then the BrandList component will render out all brands in the brands array
 
-        //we can do this instead of addBrand, but must export {brands, setBrands}:
+        //we can do this instead of addBrand, but must export {brands, setBrands} from BrandsContext:
         // const {brands, setBrands} = useContext(BrandsContext);                                    
         // setBrands([...brands, response.data.data.brand]) 
-        
-
     } catch(err){}
   }
 
@@ -38,7 +36,8 @@ function AddBrand() {
                     <input 
                         value={name} //value written in this field will be recorded in the name state, but only be set on change
                         onChange={event => setName(event.target.value)} 
-                        type="text" className="form-control" 
+                        type="text" 
+                        className="form-control" 
                         placeholder="Name"
                     />
                 </div>
@@ -46,7 +45,8 @@ function AddBrand() {
                     <input 
                         value={description} 
                         onChange={event => setDescription(event.target.value)} 
-                        type="text" className="form-control" 
+                        type="text" 
+                        className="form-control" 
                         placeholder="Description/Category"
                     />
                 </div>

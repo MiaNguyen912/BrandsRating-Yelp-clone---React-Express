@@ -1,9 +1,12 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react';
+import {useNavigate} from 'react-router-dom';
 import BrandFinder from '../apis/BrandFinder';
 import { BrandsContext } from '../context/BrandsContext';
 
 function BrandList(props) {
     const {brands, setBrands} = useContext(BrandsContext);
+    let navigate = useNavigate(); //navigate the directory
+
     useEffect(()=>{
         async function fetchData(){
             try{
@@ -24,6 +27,10 @@ function BrandList(props) {
         } catch (err){
             console.log(err)
         };
+    }  
+
+    function handleUpdate(id){
+        navigate(`/brandRatings/${id}/update`) //go to this url when function is called
     }
 
     return (
@@ -47,8 +54,14 @@ function BrandList(props) {
                                 <td>{brand.description}</td>
                                 <td>{"$".repeat(brand.price_range)}</td>
                                 <td>reviews</td>
-                                <td><button className="btn btn-secondary">Update</button></td>
-                                <td><button 
+                                <td>
+                                    <button 
+                                        className="btn btn-secondary"
+                                        onClick={()=> handleUpdate(brand.id)}
+                                    >Update</button>
+                                </td>
+                                <td>
+                                    <button 
                                         className="btn btn-secondary" 
                                         onClick={()=> handleDelete(brand.id)} //if we write onClick={handleDelete(brand.id)}, that function will be called right away
                                     >Delete</button>

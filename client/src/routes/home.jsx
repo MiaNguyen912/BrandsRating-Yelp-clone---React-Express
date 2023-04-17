@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import AddBrand from "../components/AddBrand";
 import BrandList from "../components/BrandList";
 
-const home = () => {
+function home() {
   return (
     <div>
       <Header />
