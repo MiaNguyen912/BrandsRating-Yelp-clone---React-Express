@@ -6,6 +6,7 @@ export const BrandsContext = createContext(); //initialize context
 
 function BrandsContextProvider (props){
     const [brands, setBrands] = useState([])
+    const [selectedBrand, setSelectedBrand] = useState(null)
 
     function addBrand(newBrand){
         setBrands([...brands, newBrand])
@@ -13,7 +14,7 @@ function BrandsContextProvider (props){
     
 
     return(
-        <BrandsContext.Provider value={{brands, setBrands, addBrand}}>
+        <BrandsContext.Provider value={{brands, setBrands, addBrand, selectedBrand, setSelectedBrand}}>
             {props.children }
         </BrandsContext.Provider>
     )

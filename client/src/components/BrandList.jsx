@@ -17,7 +17,9 @@ function BrandList(props) {
         fetchData();
     }, [])
 
-    async function handleDelete(id){
+    async function handleDelete(event, id){
+        event.stopPropagation(); //when click on button, handleDelete is called, then handleBrandSelect is call
+                                //we have to stop propagation when calling handleDelete to not calling handleBrandSelect 
         try{
             const response = await BrandFinder.delete(`/${id}`); //delete method in "http://localhost:3001/api/v1/brandRatings/id" will delete record from our database table
             setBrands(brands.filter((brand) =>{ //set the brands array to exclude the brand with the given id
@@ -29,8 +31,14 @@ function BrandList(props) {
         };
     }  
 
-    function handleUpdate(id){
+    function handleUpdate(event, id){
+        event.stopPropagation(); //when click on button, handleUpdate is called, then handleBrandSelect is call
+                                 //stopPropagation when calling handleUpdate will prevent calling handleBrandSelect 
         navigate(`/brandRatings/${id}/update`) //go to this url when function is called
+    }
+
+    function handleBrandSelect(id){
+        navigate(`/brandRatings/${id}`);
     }
 
     return (
@@ -49,7 +57,7 @@ function BrandList(props) {
                 <tbody>
                     {brands && brands.map((brand)=>{  //if brands exist (if we successfully fetch data and put in our context), call the brand.maps()
                         return(
-                            <tr key = {brand.id}>   
+                            <tr onClick={() => handleBrandSelect(brand.id)} key = {brand.id}>   
                                 <th>{brand.name}</th>
                                 <td>{brand.description}</td>
                                 <td>{"$".repeat(brand.price_range)}</td>
@@ -57,13 +65,13 @@ function BrandList(props) {
                                 <td>
                                     <button 
                                         className="btn btn-secondary"
-                                        onClick={()=> handleUpdate(brand.id)}
+                                        onClick={(event)=> handleUpdate(event, brand.id)}
                                     >Update</button>
                                 </td>
                                 <td>
                                     <button 
                                         className="btn btn-secondary" 
-                                        onClick={()=> handleDelete(brand.id)} //if we write onClick={handleDelete(brand.id)}, that function will be called right away
+                                        onClick={(event)=> handleDelete(event, brand.id)} //if we write onClick={handleDelete(brand.id)}, that function will be called right away
                                     >Delete</button>
                                 </td>
                             </tr>
