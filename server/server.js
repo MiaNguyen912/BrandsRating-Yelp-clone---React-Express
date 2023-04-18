@@ -38,15 +38,23 @@ app.get("/api/v1/brandRatings", async(req,res) => {
 //get a brand rating (using dynamic URL)
 app.get("/api/v1/brandRatings/:id", async (req, res)=>{  
     try {
-        const results = await db.query(
+        //get brand detail
+        const brand = await db.query(
             //`select * from brands where id = ${req.params.id}` //we can do this but interpolation is not recommended in query
                                                                  //use parameterized query instead to avoid sql injection
             "select * from brands where id = $1", [req.params.id] //$1 is placeholder for req.params.id
             );
+
+        //get brand review
+        const reviews = await db.query(
+             "select * from reviews where brand_id = $1", [req.params.id] //$1 is placeholder for req.params.id
+            );
+        console.log(reviews);
         res.status(200).json({
             status: "success",
             data:{
-               brand: results.rows[0]
+               brand: brand.rows[0],
+               reviews: reviews.rows
             }
         })
     } catch (err) {

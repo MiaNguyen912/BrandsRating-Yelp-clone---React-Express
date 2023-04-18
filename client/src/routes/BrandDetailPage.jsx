@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { BrandsContext } from '../context/BrandsContext';
 import BrandFinder from '../apis/BrandFinder';
+import Reviews from '../components/Reviews';
+import AddReview from '../components/AddReview';
 
 function BrandDetailPage(){
     const {id} = useParams();
@@ -11,7 +13,8 @@ function BrandDetailPage(){
         async function fetchData(){
             try{
                 const response = await BrandFinder.get(`/${id}`)
-                setSelectedBrand(response.data.data.brand);
+                // console.log(response);
+                setSelectedBrand(response.data.data);
             } catch(err){
                 console.log(err)
             }
@@ -20,10 +23,24 @@ function BrandDetailPage(){
     }, [])
 
     return ( 
-        <div>
-            {selectedBrand && selectedBrand.name} {/*load the selectedBrand.name only if selectedBrand is defined (selectedBrand is set to null at the beginning*/}
+        
+        <div> 
+            {/*load the selectedBrand.name only if selectedBrand is defined (selectedBrand is set to null at the beginning*/}
+            {selectedBrand && (  
+                <>
+                    <h1 className='text-center display-1'>{selectedBrand.brand.name}</h1>
+                    <div className='mt-3'>
+                        <Reviews reviews={selectedBrand.reviews}/> {/*response.data.data.reviews */}
+                    </div>
+                    <AddReview/>
+                </>
+                
+            )} 
+
         </div>
+
     )
 }
 
 export default BrandDetailPage;
+
