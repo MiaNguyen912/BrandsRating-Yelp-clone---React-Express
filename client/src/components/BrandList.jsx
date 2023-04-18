@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import {useNavigate} from 'react-router-dom';
 import BrandFinder from '../apis/BrandFinder';
 import { BrandsContext } from '../context/BrandsContext';
+import StarRating from './StarRating';
 
 function BrandList(props) {
     const {brands, setBrands} = useContext(BrandsContext);
@@ -12,6 +13,7 @@ function BrandList(props) {
             try{
                 const response = await BrandFinder.get("/ ") //baseURL is "http://localhost:3001/api/v1/brandRatings"
                 setBrands(response.data.data.brand) //in server.js, app.get() will respond with "brand" record in the "data" object
+                // console.log(response);
             } catch (error){}
         }
         fetchData();
@@ -41,6 +43,17 @@ function BrandList(props) {
         navigate(`/brandRatings/${id}`);
     }
 
+    function renderRating(brand){
+        if (!brand.count) return <span className='text-warning'>0 review</span>
+        return(
+            <>
+                <StarRating rating={brand.average_rating}/>
+                <span className="text-warning ml-1">({brand.count})</span>
+            </>
+        )
+        
+    }
+
     return (
         <div className='list-group'>
             <table class="table table-dark table-hover">
@@ -61,7 +74,7 @@ function BrandList(props) {
                                 <th>{brand.name}</th>
                                 <td>{brand.description}</td>
                                 <td>{"$".repeat(brand.price_range)}</td>
-                                <td>reviews</td>
+                                <td>{renderRating(brand)}</td>
                                 <td>
                                     <button 
                                         className="btn btn-secondary"

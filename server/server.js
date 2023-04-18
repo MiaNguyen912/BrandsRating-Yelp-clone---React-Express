@@ -21,12 +21,17 @@ app.use(express.json()); //a built in middleware function in Express
 //get all brand rating
 app.get("/api/v1/brandRatings", async(req,res) => {
     try{
-        const results = await db.query("select * from brands")
+        // const results = await db.query("select * from brands");
+        const brandRatingData = await db.query(
+            "SELECT * FROM brands LEFT JOIN (SELECT brand_id, COUNT(*), TRUNC(AVG(rating),1) AS average_rating FROM reviews GROUP BY brand_id) AS reviews ON brands.id = reviews.brand_id;"
+        )
+
         res.status(200).json({ 
     	    status: "success",
-            results: results.rows.length, 
+            results: brandRatingData.rows.length, 
             data: {
-                brand: results.rows //result is an obj containing array rows, which has the records in our database table
+                // brand: results.rows //result is an obj containing array rows, which has the records in our database table
+                brand: brandRatingData.rows 
             }  
         })  	
     } catch (error){
@@ -42,7 +47,10 @@ app.get("/api/v1/brandRatings/:id", async (req, res)=>{
         const brand = await db.query(
             //`select * from brands where id = ${req.params.id}` //we can do this but interpolation is not recommended in query
                                                                  //use parameterized query instead to avoid sql injection
-            "select * from brands where id = $1", [req.params.id] //$1 is placeholder for req.params.id
+            // "select * from brands where id = $1", [req.params.id]; //$1 is placeholder for req.params.id
+            
+            "SELECT * FROM brands LEFT JOIN (SELECT brand_id, COUNT(*), TRUNC(AVG(rating),1) AS average_rating FROM reviews GROUP BY brand_id) AS reviews ON brands.id = reviews.brand_id WHERE id=$1;", [req.params.id]
+            
             );
 
         //get brand review

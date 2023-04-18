@@ -1,9 +1,38 @@
 import React, { useState } from 'react'
+import BrandFinder from '../apis/BrandFinder';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const AddReview = () => {
     const [name, setName] = useState("");
     const [reviewText, setReviewText] = useState("");
     const [rating, setRating] = useState("Rating");
+
+    const {id} = useParams();
+    const navigate = useNavigate();
+    const location = useLocation();
+    // console.log(location); //to see detail
+
+
+    async function handleSubmitReview(e){
+        e.preventDefault();
+        try{
+             //import api
+            const response = await BrandFinder.post(`${id}/addReview`, {
+                name,
+                review: reviewText,
+                rating
+            });
+            // console.log(response);
+
+            //reload the page to see newly posted review
+            navigate("/");  //navigate to home page and
+            navigate(location.pathname); //immediately go back to current page 
+        } catch(err){console.log(err)}
+       
+
+       
+
+    }
 
   return (
     <div className='mb-2'>
@@ -46,7 +75,7 @@ const AddReview = () => {
                     ></textarea>
                 </div>
             </div>
-            <button className='btn btn-dark'>Submit</button>
+            <button type="submit" onClick={handleSubmitReview} className='btn btn-dark'>Submit</button>
 
         </form>
     </div>
