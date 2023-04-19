@@ -8,7 +8,7 @@ const app = express();
 //-------------------
 
 //express middleware:
-app.use(cors());
+app.use(cors()); //allows a server to indicate any origins (domain, scheme, or port) other than its own from which a browser should permit loading resources
 app.use(morgan("tiny")); //console.log the called api in "tiny" format
 app.use(express.json()); //a built in middleware function in Express
                          // It parses incoming JSON requests and puts 
