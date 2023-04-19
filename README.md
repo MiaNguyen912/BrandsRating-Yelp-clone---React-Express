@@ -3,4 +3,4 @@ Building a Yelp clone rating system for fashion brands using React for front-end
 
 -------------------------------------
 Run command 'npm start' in FashionRating-sql/client to start react app
-Run 'nodemon server.js' in FashionRating-sql/server to run the server
+Run 'nodemon server.js' in FashionRating-sql/server to run the server and connect to local database
